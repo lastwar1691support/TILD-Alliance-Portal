@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>TILD Alliance Portal - Server 1691</title>
+<style>
+* { box-sizing: border-box; }
+
+body {
+margin: 0;
+font-family: Arial, sans-serif;
+background: linear-gradient(135deg, #0f172a, #1e293b);
+color: #ffffff;
+padding: 20px;
+}
+
+.container {
+max-width: 850px;
+margin: 0 auto;
+background: rgba(15, 23, 42, 0.95);
+padding: 30px;
+border-radius: 18px;
+box-shadow: 0 10px 35px rgba(0,0,0,0.4);
+}
+
+h1, h2, p {
+text-align: center;
+}
+
+h1 {
+color: #38bdf8;
+margin-bottom: 5px;
+}
+
+.subtitle {
+color: #cbd5e1;
+margin-bottom: 25px;
+}
+
+.buttons {
+display: flex;
+gap: 15px;
+justify-content: center;
+flex-wrap: wrap;
+margin-bottom: 30px;
+}
+
+button, .submit-btn {
+background: #38bdf8;
+color: #0f172a;
+border: none;
+padding: 14px 22px;
+border-radius: 10px;
+font-weight: bold;
+cursor: pointer;
+font-size: 15px;
+}
+
+button:hover, .submit-btn:hover {
+background: #0ea5e9;
+}
+
+form {
+display: none;
+flex-direction: column;
+gap: 14px;
+}
+
+label {
+font-weight: bold;
+color: #e2e8f0;
+}
+
+input, select, textarea {
+width: 100%;
+padding: 12px;
+border-radius: 8px;
+border: none;
+font-size: 15px;
+}
+
+textarea {
+min-height: 100px;
+resize: vertical;
+}
+
+.note {
+color: #94a3b8;
+font-size: 14px;
+text-align: center;
+margin-bottom: 25px;
+}
+
+.footer {
+text-align: center;
+margin-top: 25px;
+color: #94a3b8;
+font-size: 13px;
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+<h1>TILD Alliance Portal</h1>
+<p class="subtitle">Server 1691 — Built on Respect. United by Strength.</p>
+
+<div class="buttons">
+<button onclick="showForm('updateForm')">Monthly Member Data Update</button>
+<button onclick="showForm('joinForm')">New Membership Application</button>
+</div>
+
+<p class="note">Please choose the correct form and submit accurate information.</p>
+
+<!-- Monthly Member Data Update -->
+<form id="updateForm" action="https://formspree.io/f/xredjrjp" method="POST">
+<input type="hidden" name="Request Type" value="Monthly Member Data Update">
+
+<h2>Monthly Member Data Update</h2>
+
+<label>Current Player Name</label>
+<input type="text" name="Current Player Name" required>
+
+<label>HQ Level</label>
+<input type="number" name="HQ Level" required>
+
+<label>Alliance Rank</label>
+<select name="Alliance Rank" required>
+<option value="">Select Rank</option>
+<option>R4</option>
+<option>R3</option>
+<option>R2</option>
+<option>R1</option>
+</select>
+
+<label>Total Hero Power</label>
+<input type="text" name="Total Hero Power" required>
+
+<label>First Squad Type</label>
+<select name="First Squad Type" required>
+<option value="">Select Type</option>
+<option>Air</option>
+<option>Tank</option>
+<option>Missile</option>
+</select>
+
+<label>T1 Power without Gorilla</label>
+<input type="text" name="T1 Power without Gorilla" required>
+
+<label>T1 Power with Gorilla</label>
+<input type="text" name="T1 Power with Gorilla" required>
+
+<label>Country / Time Zone</label>
+<input type="text" name="Country / Time Zone" required>
+
+<label>Usual Active Time (Server Time)</label>
+<input type="text" name="Active Time" required placeholder="18:00 - 23:00">
+
+<label>Discord Name</label>
+<input type="text" name="Discord Name">
+
+<label>Profession</label>
+<select name="Profession" required>
+<option value="">Select Profession</option>
+<option>War Leader</option>
+<option>Engineer</option>
+</select>
+
+<label>Profession Level</label>
+<input type="number" name="Profession Level" required>
+
+<label>Total Kills</label>
+<input type="text" name="Total Kills" required>
+
+<label>Desert Storm Team Preference</label>
+<select name="Desert Storm Team Preference" required>
+<option value="">Select Team</option>
+<option>Team B — 2:00 PM Mecca Time</option>
+<option>Team A — 11:00 PM Mecca Time</option>
+</select>
+
+<button class="submit-btn" type="submit">Submit Update</button>
+</form>
+
+<!-- New Membership Application -->
+<form id="joinForm" action="https://formspree.io/f/xredjrjp" method="POST">
+<input type="hidden" name="Request Type" value="New Membership Application">
+
+<h2>New Membership Application</h2>
+
+<label>Player Name</label>
+<input type="text" name="Player Name" required>
+
+<label>Current Alliance</label>
+<input type="text" name="Current Alliance" required>
+
+<label>HQ Level</label>
+<input type="number" name="HQ Level" required>
+
+<label>Total Hero Power</label>
+<input type="text" name="Total Hero Power" required>
+
+<label>First Squad Type</label>
+<select name="First Squad Type" required>
+<option value="">Select Type</option>
+<option>Air</option>
+<option>Tank</option>
+<option>Missile</option>
+</select>
+
+<label>T1 Power</label>
+<input type="text" name="T1 Power" required>
+
+<label>Country / Time Zone</label>
+<input type="text" name="Country / Time Zone" required>
+
+<label>Active Time</label>
+<input type="text" name="Active Time" required>
+
+<label>Discord Name</label>
+<input type="text" name="Discord Name">
+
+<label>Profession</label>
+<select name="Profession" required>
+<option value="">Select Profession</option>
+<option>War Leader</option>
+<option>Engineer</option>
+</select>
+
+<label>Profession Level</label>
+<input type="number" name="Profession Level" required>
+
+<label>Total Kills</label>
+<input type="text" name="Total Kills" required>
+
+<label>Preferred Desert Storm Team</label>
+<select name="Preferred Desert Storm Team" required>
+<option value="">Select Team</option>
+<option>Team B — 2:00 PM Mecca Time</option>
+<option>Team A — 11:00 PM Mecca Time</option>
+<option>No Preference</option>
+</select>
+
+<label>Reason for Joining TILD</label>
+<textarea name="Reason for Joining TILD" required></textarea>
+
+<label>Additional Notes</label>
+<textarea name="Additional Notes"></textarea>
+
+<button class="submit-btn" type="submit">Submit Application</button>
+</form>
+
+<div class="footer">
+TILD Alliance — Server 1691
+</div>
+</div>
+
+<script>
+function showForm(formId) {
+document.getElementById('updateForm').style.display = 'none';
+document.getElementById('joinForm').style.display = 'none';
+document.getElementById(formId).style.display = 'flex';
+window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+</script>
+
+</body>
+</html>
