@@ -92,11 +92,15 @@ text-align: center;
 margin-bottom: 25px;
 }
 
-.footer {
-text-align: center;
-margin-top: 25px;
-color: #94a3b8;
-font-size: 13px;
+.info-btn {
+border: none;
+background: transparent !important;
+color: #38bdf8 !important;
+font-size: 16px;
+cursor: pointer;
+padding: 0 !important;
+margin-left: 5px;
+width: auto !important;
 }
 </style>
 </head>
@@ -122,6 +126,14 @@ font-size: 13px;
 <label>Current Player Name</label>
 <input type="text" name="Current Player Name" required>
 
+<label>Verification Code</label>
+
+<input type="text" name="Verification Code" required>
+
+<small>
+Use your personal verification code provided by alliance leadership. Do not share it with other members.
+</small>
+
 <label>HQ Level</label>
 <input type="number" name="HQ Level" required>
 
@@ -137,8 +149,16 @@ font-size: 13px;
 <label>Total Hero Power</label>
 <input type="text" name="Total Hero Power" required>
 
-<label>Hero Power Rank (#)</label>
-<input type="number" name="Hero Power Rank" placeholder="Example: 15" required>
+<label>
+Hero Power Rank (#)
+<button type="button" class="info-btn" onclick="openHeroRankHelp()">ⓘ</button>
+</label>
+
+<input type="number" name="Hero Power Rank" placeholder="Example: #15" required>
+
+<small>
+Enter your ranking position, not your Hero Power value.
+</small>
 
 <label>First Squad Type</label>
 <select name="First Squad Type" required>
@@ -271,6 +291,10 @@ document.getElementById('updateForm').style.display = 'none';
 document.getElementById('joinForm').style.display = 'none';
 document.getElementById(formId).style.display = 'flex';
 window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function openHeroRankHelp() {
+window.open("hero-rank-example.jpg", "_blank");
 }
 </script>
 
