@@ -317,32 +317,32 @@
       </div>
     </details>
 
-    <form id="memberUpdateForm" action="https://formspree.io/f/xredjrjp" method="POST" novalidate>
+    <form id="memberUpdateForm" action="https://formspree.io/f/xredjrjp" method="POST" novalidate="">
       <input type="hidden" name="Request Type" value="Monthly Member Data Update">
-      <input type="hidden" id="updatePeriodField" name="Update Period" value="">
+      <input type="hidden" id="updatePeriodField" name="Update Period" value="August 2026 • Member Update">
       <div class="honeypot" aria-hidden="true">
         <label>Leave this field empty</label>
         <input type="text" name="_gotcha" tabindex="-1" autocomplete="off">
       </div>
 
       <h2 data-i18n="formTitle">Monthly Member Data Update</h2>
-      <p id="updatePeriod" class="update-period"></p>
+      <p id="updatePeriod" class="update-period">August 2026 • Member Update</p>
       <p class="required-note"><span class="required-star">*</span> <span id="requiredNote">Required fields</span></p>
 
       <label class="required-label" data-i18n="playerName" for="playerName">Current Player Name</label>
-      <input id="playerName" type="text" name="Current Player Name" autocomplete="off" required>
+      <input id="playerName" type="text" name="Current Player Name" autocomplete="off" required="">
       <span class="field-error"></span>
 
       <label class="required-label" data-i18n="verificationCode" for="verificationCode">Verification Code</label>
       <div class="password-wrap">
-        <input id="verificationCode" type="password" name="Verification Code" autocomplete="off" required>
+        <input id="verificationCode" type="password" name="Verification Code" autocomplete="off" required="">
         <button id="toggleCode" class="toggle-code" type="button" aria-label="Show verification code">Show</button>
       </div>
       <span class="field-error"></span>
       <small data-i18n="verificationHelp">Use your personal verification code provided by alliance leadership. Do not share it with other members.</small>
 
       <label class="required-label" data-i18n="squadType" for="squadType">First Squad Type</label>
-      <select id="squadType" name="First Squad Type" required>
+      <select id="squadType" name="First Squad Type" required="">
         <option value="" data-i18n="selectType">Select Type</option>
         <option value="Air" data-i18n="air">Air</option>
         <option value="Tank" data-i18n="tank">Tank</option>
@@ -351,19 +351,19 @@
       <span class="field-error"></span>
 
       <label id="teamPowerLabel" class="required-label" for="teamPower">Team 1 Power</label>
-      <input id="teamPower" type="text" name="Team 1 Power" required placeholder="Example • 40 million" inputmode="decimal">
+      <input id="teamPower" type="text" name="Team 1 Power" required="" placeholder="Example • 40 million" inputmode="decimal">
       <span class="field-error"></span>
 
       <label class="required-label" data-i18n="countryTimeZone" for="countrySearch">Country / Time Zone</label>
       <div class="country-search-wrap">
-        <input id="countrySearch" type="text" name="Country / Time Zone" required autocomplete="off" placeholder="Type country name • Example: ku" aria-autocomplete="list" aria-controls="countrySuggestions">
-        <div id="countrySuggestions" class="country-suggestions" role="listbox" hidden></div>
+        <input id="countrySearch" type="text" name="Country / Time Zone" required="" autocomplete="off" placeholder="Type country name • Example: ku" aria-autocomplete="list" aria-controls="countrySuggestions">
+        <div id="countrySuggestions" class="country-suggestions" role="listbox" hidden=""></div>
       </div>
       <span class="field-error"></span>
       <small id="countrySearchNote" class="timezone-note">Start typing, then choose the country from the list.</small>
 
       <label class="required-label" data-i18n="activeTime" for="activeTime">Usual Active Time (Server Time)</label>
-      <select id="activeTime" name="Active Time" required>
+      <select id="activeTime" name="Active Time" required="">
         <option value="">Select activity period</option>
         <option value="Morning • 05:00 to 11:00 Server Time">Morning • 05:00 to 11:00</option>
         <option value="Noon • 11:00 to 14:00 Server Time">Noon • 11:00 to 14:00</option>
@@ -380,14 +380,14 @@
       <button id="submitButton" class="submit-btn" type="submit" data-i18n="submit">Submit Update</button>
     </form>
 
-    <section id="successPanel" class="status-panel success-panel" hidden>
+    <section id="successPanel" class="status-panel success-panel" hidden="">
       <div class="status-icon">✓</div>
       <h2 id="successTitle">Data updated successfully</h2>
       <p id="successText">Thank you. Your monthly update has been received.</p>
       <button id="sendAnother" class="secondary-btn" type="button">Send another update</button>
     </section>
 
-    <section id="errorPanel" class="status-panel error-panel" hidden>
+    <section id="errorPanel" class="status-panel error-panel" hidden="">
       <div class="status-icon">!</div>
       <h2 id="errorTitle">Submission failed</h2>
       <p id="errorText">Please check your connection and try again.</p>
@@ -638,11 +638,7 @@
           headers: {Accept: "application/json"}
         });
         if (!response.ok) throw new Error("Submission failed");
-        memberForm.reset();
-        verificationInput.type = "password";
-        memberForm.hidden = true;
-        successPanel.hidden = false;
-        successPanel.scrollIntoView({behavior:"smooth", block:"center"});
+        window.location.href = "thank-you.html";
       } catch (error) {
         errorPanel.hidden = false;
         errorPanel.scrollIntoView({behavior:"smooth", block:"center"});
@@ -662,6 +658,8 @@
 
     changeLanguage("en");
   </script>
+
+
 
 
 
