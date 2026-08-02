@@ -1,74 +1,153 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Submission Received</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Submission Received • TILD Alliance</title>
+  <style>
+    * { box-sizing: border-box; }
 
-<style>
-body{
-margin:0;
-font-family:Arial,sans-serif;
-background:linear-gradient(135deg,#0f172a,#1e293b);
-color:white;
-display:flex;
-justify-content:center;
-align-items:center;
-min-height:100vh;
-text-align:center;
-}
+    body {
+      margin: 0;
+      min-height: 100vh;
+      padding: 20px;
+      display: grid;
+      place-items: center;
+      font-family: "Segoe UI", Arial, sans-serif;
+      color: #fff;
+      background:
+        radial-gradient(circle at 18% 12%, rgba(184,134,11,.15), transparent 28%),
+        radial-gradient(circle at 82% 78%, rgba(30,64,89,.3), transparent 34%),
+        linear-gradient(118deg, transparent 0 43%, rgba(212,175,55,.08) 44%, transparent 45% 61%, rgba(255,255,255,.035) 62%, transparent 63%),
+        linear-gradient(145deg, #05080d, #111827 48%, #071018);
+      background-attachment: fixed;
+    }
 
-.container{
-max-width:700px;
-padding:40px;
-background:rgba(15,23,42,0.95);
-border-radius:20px;
-box-shadow:0 10px 35px rgba(0,0,0,0.4);
-}
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      opacity: .42;
+      background:
+        linear-gradient(27deg, transparent 46%, rgba(255,255,255,.025) 48%, transparent 50%),
+        linear-gradient(153deg, transparent 38%, rgba(212,175,55,.035) 40%, transparent 42%);
+    }
 
-h1{
-color:#38bdf8;
-margin-bottom:20px;
-}
+    .container {
+      position: relative;
+      width: min(680px, 100%);
+      padding: 46px 36px;
+      overflow: hidden;
+      text-align: center;
+      border: 1px solid rgba(212,175,55,.38);
+      border-radius: 22px;
+      background: linear-gradient(145deg, rgba(17,24,39,.95), rgba(5,10,18,.98));
+      box-shadow: 0 24px 70px rgba(0,0,0,.62), inset 0 1px 0 rgba(255,255,255,.05);
+    }
 
-p{
-color:#cbd5e1;
-font-size:18px;
-line-height:1.7;
-}
+    .container::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 12%;
+      right: 12%;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, #d4af37, transparent);
+      box-shadow: 0 0 18px rgba(212,175,55,.55);
+    }
 
-a{
-display:inline-block;
-margin-top:25px;
-background:#38bdf8;
-color:#0f172a;
-text-decoration:none;
-padding:12px 24px;
-border-radius:10px;
-font-weight:bold;
-}
+    .emblem {
+      display: grid;
+      place-items: center;
+      width: 72px;
+      height: 72px;
+      margin: 0 auto 20px;
+      border: 1px solid #d4af37;
+      border-radius: 50%;
+      color: #f4dc85;
+      background: radial-gradient(circle at 35% 30%, #30394a, #0a0f17 68%);
+      box-shadow: 0 0 0 6px rgba(212,175,55,.06), 0 10px 30px rgba(0,0,0,.5);
+      font-family: Georgia, serif;
+      font-weight: bold;
+      letter-spacing: 2px;
+    }
 
-a:hover{
-background:#0ea5e9;
-}
-</style>
+    .success-icon {
+      display: grid;
+      place-items: center;
+      width: 64px;
+      height: 64px;
+      margin: 0 auto 18px;
+      border: 2px solid #55b879;
+      border-radius: 50%;
+      color: #8ee6ad;
+      background: rgba(69,168,106,.12);
+      font-size: 32px;
+      font-weight: bold;
+    }
+
+    h1 {
+      margin: 0 0 16px;
+      color: #f1d978;
+      font-family: Georgia, "Times New Roman", serif;
+      letter-spacing: .7px;
+      text-shadow: 0 2px 18px rgba(212,175,55,.22);
+    }
+
+    p {
+      max-width: 540px;
+      margin: 0 auto;
+      color: #cbd5e1;
+      font-size: 17px;
+      line-height: 1.8;
+    }
+
+    .return-btn {
+      display: inline-block;
+      margin-top: 28px;
+      padding: 13px 25px;
+      border-radius: 9px;
+      color: #171007;
+      background: linear-gradient(135deg, #f0d879, #b88a19);
+      box-shadow: 0 8px 24px rgba(184,138,25,.24);
+      font-weight: 700;
+      text-decoration: none;
+      transition: transform .2s, filter .2s, box-shadow .2s;
+    }
+
+    .return-btn:hover {
+      filter: brightness(1.08);
+      transform: translateY(-2px);
+      box-shadow: 0 12px 30px rgba(184,138,25,.34);
+    }
+
+    .footer {
+      margin-top: 28px;
+      color: #9b8a58;
+      font-size: 13px;
+      letter-spacing: .7px;
+    }
+
+    @media (max-width: 600px) {
+      body { padding: 12px; }
+      .container { padding: 38px 20px; }
+      h1 { font-size: 27px; }
+      p { font-size: 15px; }
+    }
+  </style>
 </head>
-
 <body>
-
-<div class="container">
-
-<h1>Thank You</h1>
-
-<p>
-Your submission has been received successfully.
-<br><br>
-The TILD leadership team will review the information provided and contact you if necessary.
-</p>
-
-<a href="index.html">Return to Portal</a>
-
-</div>
-
+  <main class="container">
+    <div class="emblem">TILD</div>
+    <div class="success-icon">✓</div>
+    <h1>Thank You</h1>
+    <p>
+      Your information has been received successfully.<br>
+      The TILD leadership team will review your monthly member update.
+    </p>
+    <a class="return-btn" href="index.html">Return to Portal</a>
+    <div class="footer">TILD Alliance • Server 1691</div>
+  </main>
 </body>
 </html>
