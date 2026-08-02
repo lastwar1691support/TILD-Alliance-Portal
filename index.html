@@ -1,6 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
+<html lang="en" dir="ltr"><head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>TILD Alliance Portal - Server 1691</title>
@@ -234,6 +233,56 @@
       .container { padding: 72px 18px 24px; }
       form { padding: 20px 14px; }
     }
+
+    .required-label::after { content: " *"; color: #efc84a; }
+    .required-note { margin: -4px 0 4px; text-align: start; color: #aeb8c6; font-size: 13px; }
+    .required-star { color: #efc84a; font-weight: bold; }
+    .update-period { margin: -3px 0 10px; color: #b9a15a; font-size: 14px; }
+    .password-wrap { position: relative; }
+    .password-wrap input { padding-inline-end: 78px; }
+    .toggle-code {
+      position: absolute; inset-inline-end: 7px; top: 50%; transform: translateY(-50%);
+      border: 0; border-radius: 6px; padding: 7px 10px; background: #253044;
+      color: #f1d978; cursor: pointer; font-weight: 600;
+    }
+    .field-error { display: none; color: #ff8d8d; font-size: 13px; margin-top: -8px; }
+    input.invalid, select.invalid { border-color: #d85b5b; box-shadow: 0 0 0 3px rgba(216,91,91,.12); }
+    .honeypot { position: absolute !important; left: -10000px !important; width: 1px; height: 1px; overflow: hidden; }
+    .status-panel { padding: 38px 24px; text-align: center; border-radius: 16px; border: 1px solid rgba(212,175,55,.35); background: rgba(255,255,255,.025); }
+    .status-icon { display: grid; place-items: center; width: 62px; height: 62px; margin: 0 auto 16px; border-radius: 50%; font-size: 32px; font-weight: bold; }
+    .success-panel .status-icon { color: #8ee6ad; border: 2px solid #45a86a; background: rgba(69,168,106,.12); }
+    .error-panel .status-icon { color: #ff9999; border: 2px solid #d85b5b; background: rgba(216,91,91,.12); }
+    .secondary-btn { border: 1px solid #d4af37; border-radius: 9px; padding: 11px 18px; background: transparent; color: #f1d978; cursor: pointer; }
+    .submit-btn:disabled { opacity: .65; cursor: wait; transform: none; }
+    .timezone-note { color: #b8a86e; font-size: 13px; margin-top: -7px; }
+    .country-search-wrap { position: relative; }
+    .country-suggestions {
+      position: absolute;
+      top: calc(100% + 6px);
+      inset-inline-start: 0;
+      width: 100%;
+      max-height: 280px;
+      overflow-y: auto;
+      padding: 7px;
+      border: 1px solid rgba(212,175,55,.38);
+      border-radius: 10px;
+      background: #0b111b;
+      box-shadow: 0 14px 34px rgba(0,0,0,.55);
+      z-index: 30;
+    }
+    .country-suggestion {
+      width: 100%;
+      padding: 10px 11px;
+      border: 0;
+      border-radius: 7px;
+      background: transparent;
+      color: #fff;
+      text-align: start;
+      cursor: pointer;
+      font-size: 14px;
+    }
+    .country-suggestion:hover,
+    .country-suggestion:focus { background: rgba(212,175,55,.14); outline: none; }
   </style>
 </head>
 <body>
@@ -252,6 +301,7 @@
         <button type="button" class="language-option" data-language="en"><img class="flag-icon" src="https://flagcdn.com/w40/gb.png" alt=""> English</button>
         <button type="button" class="language-option" data-language="pt-BR"><img class="flag-icon" src="https://flagcdn.com/w40/br.png" alt=""> Português — Brasil</button>
         <button type="button" class="language-option" data-language="ja"><img class="flag-icon" src="https://flagcdn.com/w40/jp.png" alt=""> 日本語</button>
+        <button type="button" class="language-option" data-language="ko"><img class="flag-icon" src="https://flagcdn.com/w40/kr.png" alt=""> 한국어</button>
         <button type="button" class="language-option" data-language="zh"><img class="flag-icon" src="https://flagcdn.com/w40/cn.png" alt=""> 中文</button>
         <button type="button" class="language-option" data-language="tr"><img class="flag-icon" src="https://flagcdn.com/w40/tr.png" alt=""> Türkçe</button>
         <button type="button" class="language-option" data-language="ar"><img class="flag-icon" src="https://flagcdn.com/w40/sa.png" alt=""> العربية</button>
@@ -260,43 +310,88 @@
         <button type="button" class="language-option" data-language="de"><img class="flag-icon" src="https://flagcdn.com/w40/de.png" alt=""> Deutsch</button>
         <button type="button" class="language-option" data-language="nl-BE"><img class="flag-icon" src="https://flagcdn.com/w40/be.png" alt=""> Nederlands — België</button>
         <button type="button" class="language-option" data-language="id"><img class="flag-icon" src="https://flagcdn.com/w40/id.png" alt=""> Bahasa Indonesia</button>
+        <button type="button" class="language-option" data-language="fil"><img class="flag-icon" src="https://flagcdn.com/w40/ph.png" alt=""> Filipino</button>
         <button type="button" class="language-option" data-language="lt"><img class="flag-icon" src="https://flagcdn.com/w40/lt.png" alt=""> Lietuvių — Vilnius</button>
         <button type="button" class="language-option" data-language="es"><img class="flag-icon" src="https://flagcdn.com/w40/es.png" alt=""> Español</button>
         <button type="button" class="language-option" data-language="th"><img class="flag-icon" src="https://flagcdn.com/w40/th.png" alt=""> ไทย</button>
       </div>
     </details>
 
-    <form action="https://formspree.io/f/xredjrjp" method="POST">
+    <form id="memberUpdateForm" action="https://formspree.io/f/xredjrjp" method="POST" novalidate>
       <input type="hidden" name="Request Type" value="Monthly Member Data Update">
+      <input type="hidden" id="updatePeriodField" name="Update Period" value="">
+      <div class="honeypot" aria-hidden="true">
+        <label>Leave this field empty</label>
+        <input type="text" name="_gotcha" tabindex="-1" autocomplete="off">
+      </div>
 
       <h2 data-i18n="formTitle">Monthly Member Data Update</h2>
+      <p id="updatePeriod" class="update-period"></p>
+      <p class="required-note"><span class="required-star">*</span> <span id="requiredNote">Required fields</span></p>
 
-      <label data-i18n="playerName">Current Player Name</label>
-      <input type="text" name="Current Player Name" required>
+      <label class="required-label" data-i18n="playerName" for="playerName">Current Player Name</label>
+      <input id="playerName" type="text" name="Current Player Name" autocomplete="off" required>
+      <span class="field-error"></span>
 
-      <label data-i18n="verificationCode">Verification Code</label>
-      <input type="text" name="Verification Code" required>
+      <label class="required-label" data-i18n="verificationCode" for="verificationCode">Verification Code</label>
+      <div class="password-wrap">
+        <input id="verificationCode" type="password" name="Verification Code" autocomplete="off" required>
+        <button id="toggleCode" class="toggle-code" type="button" aria-label="Show verification code">Show</button>
+      </div>
+      <span class="field-error"></span>
       <small data-i18n="verificationHelp">Use your personal verification code provided by alliance leadership. Do not share it with other members.</small>
 
-      <label data-i18n="squadType">First Squad Type</label>
-      <select name="First Squad Type" required>
+      <label class="required-label" data-i18n="squadType" for="squadType">First Squad Type</label>
+      <select id="squadType" name="First Squad Type" required>
         <option value="" data-i18n="selectType">Select Type</option>
         <option value="Air" data-i18n="air">Air</option>
         <option value="Tank" data-i18n="tank">Tank</option>
         <option value="Missile" data-i18n="missile">Missile</option>
       </select>
+      <span class="field-error"></span>
 
-      <label data-i18n="countryTimeZone">Country / Time Zone</label>
-      <input type="text" name="Country / Time Zone" required>
+      <label id="teamPowerLabel" class="required-label" for="teamPower">Team 1 Power</label>
+      <input id="teamPower" type="text" name="Team 1 Power" required placeholder="Example • 40 million" inputmode="decimal">
+      <span class="field-error"></span>
 
-      <label data-i18n="activeTime">Usual Active Time (Server Time)</label>
-      <input type="text" name="Active Time" required placeholder="18:00 - 23:00">
+      <label class="required-label" data-i18n="countryTimeZone" for="countrySearch">Country / Time Zone</label>
+      <div class="country-search-wrap">
+        <input id="countrySearch" type="text" name="Country / Time Zone" required autocomplete="off" placeholder="Type country name • Example: ku" aria-autocomplete="list" aria-controls="countrySuggestions">
+        <div id="countrySuggestions" class="country-suggestions" role="listbox" hidden></div>
+      </div>
+      <span class="field-error"></span>
+      <small id="countrySearchNote" class="timezone-note">Start typing, then choose the country from the list.</small>
 
-      <label data-i18n="notes">Additional Notes</label>
-      <textarea name="Additional Notes"></textarea>
+      <label class="required-label" data-i18n="activeTime" for="activeTime">Usual Active Time (Server Time)</label>
+      <select id="activeTime" name="Active Time" required>
+        <option value="">Select activity period</option>
+        <option value="Morning • 05:00 to 11:00 Server Time">Morning • 05:00 to 11:00</option>
+        <option value="Noon • 11:00 to 14:00 Server Time">Noon • 11:00 to 14:00</option>
+        <option value="Afternoon • 14:00 to 18:00 Server Time">Afternoon • 14:00 to 18:00</option>
+        <option value="Evening • 18:00 to 22:00 Server Time">Evening • 18:00 to 22:00</option>
+        <option value="Night • 22:00 to 05:00 Server Time">Night • 22:00 to 05:00</option>
+        <option value="Active all day • 24 hours">24 Hours • Active all day</option>
+      </select>
+      <span class="field-error"></span>
 
-      <button class="submit-btn" type="submit" data-i18n="submit">Submit Update</button>
+      <label data-i18n="notes" for="additionalNotes">Additional Notes</label>
+      <textarea id="additionalNotes" name="Additional Notes"></textarea>
+
+      <button id="submitButton" class="submit-btn" type="submit" data-i18n="submit">Submit Update</button>
     </form>
+
+    <section id="successPanel" class="status-panel success-panel" hidden>
+      <div class="status-icon">✓</div>
+      <h2 id="successTitle">Data updated successfully</h2>
+      <p id="successText">Thank you. Your monthly update has been received.</p>
+      <button id="sendAnother" class="secondary-btn" type="button">Send another update</button>
+    </section>
+
+    <section id="errorPanel" class="status-panel error-panel" hidden>
+      <div class="status-icon">!</div>
+      <h2 id="errorTitle">Submission failed</h2>
+      <p id="errorText">Please check your connection and try again.</p>
+    </section>
 
     <div class="footer">TILD Alliance • Server 1691</div>
   </div>
@@ -306,6 +401,7 @@
       en: ["Server 1691 • Built on Respect. United by Strength.", "Choose Language", "Monthly Member Data Update", "Current Player Name", "Verification Code", "Use your personal verification code provided by alliance leadership. Do not share it with other members.", "First Squad Type", "Select Type", "Air", "Tank", "Missile", "Country / Time Zone", "Usual Active Time (Server Time)", "Additional Notes", "Submit Update"],
       "pt-BR": ["Servidor 1691 — Construído com respeito. Unidos pela força.", "Escolha o idioma", "Atualização mensal dos dados do membro", "Nome atual do jogador", "Código de verificação", "Use o código pessoal fornecido pela liderança da aliança. Não o compartilhe com outros membros.", "Tipo da primeira equipe", "Selecione o tipo", "Aéreo", "Tanque", "Míssil", "País / Fuso horário", "Horário habitual de atividade (horário do servidor)", "Observações adicionais", "Enviar atualização"],
       ja: ["サーバー1691 — 敬意を礎に、力で団結。", "言語を選択", "メンバーデータ月次更新", "現在のプレイヤー名", "確認コード", "同盟リーダーから提供された個人確認コードを使用してください。他のメンバーと共有しないでください。", "第1部隊タイプ", "タイプを選択", "航空", "戦車", "ミサイル", "国 / タイムゾーン", "通常の活動時間（サーバー時間）", "追加メモ", "更新を送信"],
+      ko: ["서버 1691 • 존중을 바탕으로, 힘으로 하나 됩니다.", "언어 선택", "월간 회원 정보 업데이트", "현재 플레이어 이름", "인증 코드", "연맹 지도부에서 제공한 개인 인증 코드를 사용하세요. 다른 회원과 공유하지 마세요.", "첫 번째 부대 유형", "유형 선택", "공군", "전차", "미사일", "국가 / 시간대", "평소 활동 시간 (서버 시간)", "추가 메모", "업데이트 제출"],
       zh: ["服务器 1691 • 以尊重为本，以力量团结。", "选择语言", "成员资料月度更新", "当前玩家名称", "验证码", "请使用联盟管理层提供的个人验证码，不要与其他成员分享。", "第一编队类型", "选择类型", "空军", "坦克", "导弹", "国家 / 时区", "常用活跃时间（服务器时间）", "附加说明", "提交更新"],
       tr: ["Sunucu 1691 — Saygı üzerine kuruldu. Güçle birleşti.", "Dil seçin", "Aylık üye bilgisi güncellemesi", "Mevcut oyuncu adı", "Doğrulama kodu", "İttifak yönetimi tarafından verilen kişisel doğrulama kodunuzu kullanın. Başka üyelerle paylaşmayın.", "Birinci takım türü", "Tür seçin", "Hava", "Tank", "Füze", "Ülke / Saat dilimi", "Genel aktiflik saati (sunucu saati)", "Ek notlar", "Güncellemeyi gönder"],
       ar: ["السيرفر 1691 • بُني على الاحترام، واتحد بالقوة.", "اختر اللغة", "التحديث الشهري لبيانات العضو", "اسم اللاعب الحالي", "رمز التحقق", "استخدم رمز التحقق الشخصي المقدم من قيادة التحالف، ولا تشاركه مع الأعضاء الآخرين.", "نوع الفريق الأول", "اختر النوع", "جوي", "دبابات", "صواريخ", "الدولة / المنطقة الزمنية", "وقت النشاط المعتاد (بتوقيت السيرفر)", "ملاحظات إضافية", "إرسال التحديث"],
@@ -314,6 +410,7 @@
       de: ["Server 1691 — Auf Respekt aufgebaut. Durch Stärke vereint.", "Sprache wählen", "Monatliche Aktualisierung der Mitgliedsdaten", "Aktueller Spielername", "Bestätigungscode", "Verwende deinen persönlichen Bestätigungscode von der Allianzleitung. Teile ihn nicht mit anderen Mitgliedern.", "Typ des ersten Trupps", "Typ auswählen", "Luft", "Panzer", "Rakete", "Land / Zeitzone", "Übliche aktive Zeit (Serverzeit)", "Zusätzliche Hinweise", "Aktualisierung senden"],
       "nl-BE": ["Server 1691 — Gebouwd op respect. Verenigd door kracht.", "Kies taal", "Maandelijkse update van ledengegevens", "Huidige spelersnaam", "Verificatiecode", "Gebruik je persoonlijke verificatiecode van de alliantie-leiding. Deel deze niet met andere leden.", "Type eerste team", "Selecteer type", "Lucht", "Tank", "Raket", "Land / Tijdzone", "Gebruikelijke actieve tijd (servertijd)", "Aanvullende opmerkingen", "Update verzenden"],
       id: ["Server 1691 — Dibangun atas rasa hormat. Bersatu oleh kekuatan.", "Pilih bahasa", "Pembaruan data anggota bulanan", "Nama pemain saat ini", "Kode verifikasi", "Gunakan kode verifikasi pribadi yang diberikan pimpinan aliansi. Jangan bagikan kepada anggota lain.", "Jenis skuad pertama", "Pilih jenis", "Udara", "Tank", "Rudal", "Negara / Zona waktu", "Waktu aktif biasa (waktu server)", "Catatan tambahan", "Kirim pembaruan"],
+      fil: ["Server 1691 • Itinayo sa paggalang. Pinagbuklod ng lakas.", "Pumili ng wika", "Buwanang pag-update ng datos ng miyembro", "Kasalukuyang pangalan ng manlalaro", "Kodigo ng beripikasyon", "Gamitin ang personal na kodigo na ibinigay ng pamunuan ng alyansa. Huwag itong ibahagi sa ibang miyembro.", "Uri ng unang squad", "Pumili ng uri", "Eroplano", "Tangke", "Misil", "Bansa / Time zone", "Karaniwang oras ng aktibidad (oras ng server)", "Karagdagang tala", "Isumite ang update"],
       lt: ["Serveris 1691 — Sukurtas pagarba. Suvienytas jėgos.", "Pasirinkite kalbą", "Mėnesinis nario duomenų atnaujinimas", "Dabartinis žaidėjo vardas", "Patvirtinimo kodas", "Naudokite asmeninį patvirtinimo kodą, kurį suteikė aljanso vadovybė. Nesidalykite juo su kitais nariais.", "Pirmosios komandos tipas", "Pasirinkite tipą", "Oro", "Tankų", "Raketų", "Šalis / Laiko juosta", "Įprastas aktyvumo laikas (serverio laiku)", "Papildomos pastabos", "Siųsti atnaujinimą"],
       es: ["Servidor 1691 — Construido sobre el respeto. Unidos por la fuerza.", "Elegir idioma", "Actualización mensual de datos del miembro", "Nombre actual del jugador", "Código de verificación", "Usa el código personal proporcionado por el liderazgo de la alianza. No lo compartas con otros miembros.", "Tipo del primer escuadrón", "Seleccionar tipo", "Aéreo", "Tanque", "Misil", "País / Zona horaria", "Horario habitual de actividad (hora del servidor)", "Notas adicionales", "Enviar actualización"],
       th: ["เซิร์ฟเวอร์ 1691 — สร้างขึ้นด้วยความเคารพ รวมเป็นหนึ่งด้วยพลัง", "เลือกภาษา", "อัปเดตข้อมูลสมาชิกรายเดือน", "ชื่อผู้เล่นปัจจุบัน", "รหัสยืนยัน", "ใช้รหัสยืนยันส่วนตัวที่ได้รับจากผู้นำพันธมิตร และห้ามแชร์กับสมาชิกคนอื่น", "ประเภททีมแรก", "เลือกประเภท", "อากาศ", "รถถัง", "ขีปนาวุธ", "ประเทศ / เขตเวลา", "ช่วงเวลาที่ใช้งานเป็นประจำ (เวลาเซิร์ฟเวอร์)", "หมายเหตุเพิ่มเติม", "ส่งข้อมูลอัปเดต"]
@@ -325,6 +422,7 @@
     const languageNames = {
       en: ["gb", "English"], "pt-BR": ["br", "Português"], ja: ["jp", "日本語"],
       zh: ["cn", "中文"], tr: ["tr", "Türkçe"], ar: ["sa", "العربية"],
+      ko: ["kr", "한국어"], fil: ["ph", "Filipino"],
       vi: ["vn", "Tiếng Việt"], fr: ["fr", "Français"], de: ["de", "Deutsch"],
       "nl-BE": ["be", "Nederlands"], id: ["id", "Indonesia"], lt: ["lt", "Lietuvių"],
       es: ["es", "Español"], th: ["th", "ไทย"]
@@ -342,7 +440,7 @@
       document.documentElement.dir = language === "ar" ? "rtl" : "ltr";
       const selectedLanguage = languageNames[language] || languageNames.en;
       currentLanguage.innerHTML = `<img class="flag-icon" src="https://flagcdn.com/w40/${selectedLanguage[0]}.png" alt=""> ${selectedLanguage[1]}`;
-      localStorage.setItem("tildLanguage", language);
+      updateEnhancements(language);
     }
 
     document.querySelectorAll(".language-option").forEach(button => {
@@ -352,11 +450,220 @@
       });
     });
 
-    const savedLanguage = localStorage.getItem("tildLanguage");
-    if (savedLanguage && translations[savedLanguage]) {
-      changeLanguage(savedLanguage);
+    const enhancementText = {
+      en: {show:"Show",hide:"Hide",required:"Required fields",field:"Please complete this field.",time:"Use the format 18:00 - 23:00.",sending:"Sending...",success:"Data updated successfully",successText:"Thank you. Your monthly update has been received.",another:"Send another update",error:"Submission failed",errorText:"Please check your connection and try again.",update:"Member Update"},
+      ar: {show:"إظهار",hide:"إخفاء",required:"الحقول المطلوبة",field:"يرجى تعبئة هذه الخانة.",time:"اختر فترة النشاط.",sending:"جارٍ الإرسال...",success:"تم تحديث بياناتك بنجاح",successText:"شكرًا لك، تم استلام تحديثك الشهري.",another:"إرسال تحديث آخر",error:"تعذر الإرسال",errorText:"تحقق من اتصالك وحاول مرة أخرى.",update:"تحديث بيانات الأعضاء"},
+      fil: {show:"Ipakita",hide:"Itago",required:"Mga kinakailangang field",field:"Pakikumpleto ang field na ito.",time:"Pumili ng oras ng aktibidad.",sending:"Ipinapadala...",success:"Matagumpay na na-update ang datos",successText:"Salamat. Natanggap na ang iyong buwanang update.",another:"Magpadala ng panibagong update",error:"Hindi naipadala",errorText:"Suriin ang koneksyon at subukang muli.",update:"Update ng Miyembro"},
+      ko: {show:"표시",hide:"숨기기",required:"필수 항목",field:"이 항목을 입력하세요.",time:"활동 시간대를 선택하세요.",sending:"전송 중...",success:"정보가 성공적으로 업데이트되었습니다",successText:"감사합니다. 월간 업데이트가 접수되었습니다.",another:"다른 업데이트 보내기",error:"제출 실패",errorText:"인터넷 연결을 확인하고 다시 시도하세요.",update:"회원 업데이트"}
+    };
+
+    const monthLocales = {"pt-BR":"pt-BR",ja:"ja-JP",ko:"ko-KR",zh:"zh-CN",tr:"tr-TR",ar:"ar-KW",vi:"vi-VN",fr:"fr-FR",de:"de-DE","nl-BE":"nl-BE",id:"id-ID",fil:"fil-PH",lt:"lt-LT",es:"es-ES",th:"th-TH",en:"en-GB"};
+    const teamPowerTranslations = {
+      en: ["Team 1 Power", "Example • 40 million"],
+      "pt-BR": ["Poder da Equipe 1", "Exemplo • 40 milhões"],
+      ja: ["第1部隊戦力", "例 • 4000万"],
+      ko: ["1팀 전투력", "예시 • 4천만"],
+      zh: ["第一队战力", "示例 • 4000万"],
+      tr: ["1. Takım Gücü", "Örnek • 40 milyon"],
+      ar: ["قوة الفريق الأول", "مثال • 40 مليون"],
+      vi: ["Sức mạnh Đội 1", "Ví dụ • 40 triệu"],
+      fr: ["Puissance de l’équipe 1", "Exemple • 40 millions"],
+      de: ["Stärke von Team 1", "Beispiel • 40 Millionen"],
+      "nl-BE": ["Kracht van team 1", "Voorbeeld • 40 miljoen"],
+      id: ["Kekuatan Tim 1", "Contoh • 40 juta"],
+      fil: ["Lakas ng Team 1", "Halimbawa • 40 milyon"],
+      lt: ["1-osios komandos galia", "Pavyzdys • 40 milijonų"],
+      es: ["Poder del Equipo 1", "Ejemplo • 40 millones"],
+      th: ["พลังทีม 1", "ตัวอย่าง • 40 ล้าน"]
+    };
+    const verificationInput = document.getElementById("verificationCode");
+    const toggleCode = document.getElementById("toggleCode");
+    const memberForm = document.getElementById("memberUpdateForm");
+    const submitButton = document.getElementById("submitButton");
+    const successPanel = document.getElementById("successPanel");
+    const errorPanel = document.getElementById("errorPanel");
+    const countrySearch = document.getElementById("countrySearch");
+    const countrySuggestions = document.getElementById("countrySuggestions");
+    const countrySearchNote = document.getElementById("countrySearchNote");
+    const activeTimeSelect = document.getElementById("activeTime");
+    let activeLanguage = document.documentElement.lang || "en";
+    let availableCountries = [];
+
+    const countryCodes = "AD AE AF AG AI AL AM AO AQ AR AS AT AU AW AX AZ BA BB BD BE BF BG BH BI BJ BL BM BN BO BQ BR BS BT BV BW BY BZ CA CC CD CF CG CH CI CK CL CM CN CO CR CU CV CW CX CY CZ DE DJ DK DM DO DZ EC EE EG EH ER ES ET FI FJ FK FM FO FR GA GB GD GE GF GG GH GI GL GM GN GP GQ GR GS GT GU GW GY HK HM HN HR HT HU ID IE IL IM IN IO IQ IR IS IT JE JM JO JP KE KG KH KI KM KN KP KR KW KY KZ LA LB LC LI LK LR LS LT LU LV LY MA MC MD ME MF MG MH MK ML MM MN MO MP MQ MR MS MT MU MV MW MX MY MZ NA NC NE NF NG NI NL NO NP NR NU NZ OM PA PE PF PG PH PK PL PM PN PR PS PT PW PY QA RE RO RS RU RW SA SB SC SD SE SG SH SI SJ SK SL SM SN SO SR SS ST SV SX SY SZ TC TD TF TG TH TJ TK TL TM TN TO TR TT TV TW TZ UA UG UM US UY UZ VA VC VE VG VI VN VU WF WS YE YT ZA ZM ZW".split(" ");
+
+    const countryTimeZones = {"AS":"Pacific/Pago_Pago","NU":"Pacific/Niue","UM":"Pacific/Midway","US":"America/New_York","CK":"Pacific/Rarotonga","PF":"Pacific/Tahiti","MX":"America/Mexico_City","PN":"Pacific/Pitcairn","CA":"America/Toronto","BZ":"America/Belize","CR":"America/Costa_Rica","EC":"America/Guayaquil","GT":"America/Guatemala","HN":"America/Tegucigalpa","NI":"America/Managua","SV":"America/El_Salvador","CL":"America/Santiago","BR":"America/Sao_Paulo","CO":"America/Bogota","JM":"America/Jamaica","KY":"America/Cayman","PA":"America/Panama","PE":"America/Lima","BS":"America/Nassau","HT":"America/Port-au-Prince","CU":"America/Havana","TC":"America/Grand_Turk","PY":"America/Asuncion","BM":"Atlantic/Bermuda","GL":"America/Godthab","VE":"America/Caracas","AG":"America/Antigua","AI":"America/Anguilla","AW":"America/Aruba","BB":"America/Barbados","BL":"America/St_Barthelemy","BO":"America/La_Paz","BQ":"America/Kralendijk","CW":"America/Curacao","DM":"America/Dominica","DO":"America/Santo_Domingo","GD":"America/Grenada","GP":"America/Guadeloupe","GY":"America/Guyana","KN":"America/St_Kitts","LC":"America/St_Lucia","MF":"America/Marigot","MQ":"America/Martinique","MS":"America/Montserrat","PR":"America/Puerto_Rico","SX":"America/Lower_Princes","TT":"America/Port_of_Spain","VC":"America/St_Vincent","VG":"America/Tortola","VI":"America/St_Thomas","AQ":"Antarctica/McMurdo","FK":"Atlantic/Stanley","GF":"America/Cayenne","SR":"America/Paramaribo","AR":"America/Buenos_Aires","UY":"America/Montevideo","PM":"America/Miquelon","GS":"Atlantic/South_Georgia","PT":"Europe/Lisbon","CV":"Atlantic/Cape_Verde","ES":"Europe/Madrid","FO":"Atlantic/Faeroe","GB":"Europe/London","GG":"Europe/Guernsey","IE":"Europe/Dublin","IM":"Europe/Isle_of_Man","JE":"Europe/Jersey","BF":"Africa/Ouagadougou","CI":"Africa/Abidjan","GH":"Africa/Accra","GM":"Africa/Banjul","GN":"Africa/Conakry","GW":"Africa/Bissau","IS":"Atlantic/Reykjavik","LR":"Africa/Monrovia","ML":"Africa/Bamako","MR":"Africa/Nouakchott","SH":"Atlantic/St_Helena","SL":"Africa/Freetown","SN":"Africa/Dakar","TG":"Africa/Lome","ST":"Africa/Sao_Tome","EH":"Africa/El_Aaiun","MA":"Africa/Casablanca","AD":"Europe/Andorra","AT":"Europe/Vienna","CH":"Europe/Zurich","DE":"Europe/Berlin","GI":"Europe/Gibraltar","IT":"Europe/Rome","LI":"Europe/Vaduz","LU":"Europe/Luxembourg","MC":"Europe/Monaco","MT":"Europe/Malta","NL":"Europe/Amsterdam","NO":"Europe/Oslo","SE":"Europe/Stockholm","SJ":"Arctic/Longyearbyen","SM":"Europe/San_Marino","VA":"Europe/Vatican","AL":"Europe/Tirane","CZ":"Europe/Prague","HU":"Europe/Budapest","ME":"Europe/Podgorica","RS":"Europe/Belgrade","SI":"Europe/Ljubljana","SK":"Europe/Bratislava","BE":"Europe/Brussels","DK":"Europe/Copenhagen","FR":"Europe/Paris","BA":"Europe/Sarajevo","HR":"Europe/Zagreb","MK":"Europe/Skopje","PL":"Europe/Warsaw","AO":"Africa/Luanda","BJ":"Africa/Porto-Novo","CD":"Africa/Kinshasa","CF":"Africa/Bangui","CG":"Africa/Brazzaville","CM":"Africa/Douala","DZ":"Africa/Algiers","GA":"Africa/Libreville","GQ":"Africa/Malabo","NE":"Africa/Niamey","NG":"Africa/Lagos","TD":"Africa/Ndjamena","TN":"Africa/Tunis","JO":"Asia/Amman","CY":"Asia/Nicosia","GR":"Europe/Athens","RO":"Europe/Bucharest","LB":"Asia/Beirut","EG":"Africa/Cairo","MD":"Europe/Chisinau","SY":"Asia/Damascus","PS":"Asia/Hebron","BI":"Africa/Bujumbura","BW":"Africa/Gaborone","LS":"Africa/Maseru","MW":"Africa/Blantyre","MZ":"Africa/Maputo","RW":"Africa/Kigali","SZ":"Africa/Mbabane","ZA":"Africa/Johannesburg","ZM":"Africa/Lusaka","ZW":"Africa/Harare","AX":"Europe/Mariehamn","BG":"Europe/Sofia","EE":"Europe/Tallinn","FI":"Europe/Helsinki","LT":"Europe/Vilnius","LV":"Europe/Riga","UA":"Europe/Kiev","IL":"Asia/Jerusalem","SS":"Africa/Juba","RU":"Europe/Moscow","SD":"Africa/Khartoum","LY":"Africa/Tripoli","NA":"Africa/Windhoek","IQ":"Asia/Baghdad","TR":"Europe/Istanbul","BH":"Asia/Bahrain","KW":"Asia/Kuwait","QA":"Asia/Qatar","SA":"Asia/Riyadh","YE":"Asia/Aden","BY":"Europe/Minsk","DJ":"Africa/Djibouti","ER":"Africa/Asmera","ET":"Africa/Addis_Ababa","KE":"Africa/Nairobi","KM":"Indian/Comoro","MG":"Indian/Antananarivo","SO":"Africa/Mogadishu","TZ":"Africa/Dar_es_Salaam","UG":"Africa/Kampala","YT":"Indian/Mayotte","IR":"Asia/Tehran","AE":"Asia/Dubai","OM":"Asia/Muscat","AZ":"Asia/Baku","MU":"Indian/Mauritius","RE":"Indian/Reunion","SC":"Indian/Mahe","GE":"Asia/Tbilisi","AM":"Asia/Yerevan","AF":"Asia/Kabul","KZ":"Asia/Almaty","MV":"Indian/Maldives","TF":"Indian/Kerguelen","TJ":"Asia/Dushanbe","TM":"Asia/Ashgabat","UZ":"Asia/Tashkent","PK":"Asia/Karachi","IN":"Asia/Calcutta","LK":"Asia/Colombo","NP":"Asia/Katmandu","CN":"Asia/Shanghai","IO":"Indian/Chagos","KG":"Asia/Bishkek","BD":"Asia/Dhaka","BT":"Asia/Thimphu","CC":"Indian/Cocos","MM":"Asia/Rangoon","CX":"Indian/Christmas","ID":"Asia/Jakarta","KH":"Asia/Phnom_Penh","LA":"Asia/Vientiane","TH":"Asia/Bangkok","VN":"Asia/Saigon","MN":"Asia/Hovd","HK":"Asia/Hong_Kong","MO":"Asia/Macau","BN":"Asia/Brunei","MY":"Asia/Kuala_Lumpur","PH":"Asia/Manila","SG":"Asia/Singapore","AU":"Australia/Sydney","TW":"Asia/Taipei","JP":"Asia/Tokyo","PW":"Pacific/Palau","TL":"Asia/Dili","KP":"Asia/Pyongyang","KR":"Asia/Seoul","FM":"Pacific/Truk","GU":"Pacific/Guam","MP":"Pacific/Saipan","PG":"Pacific/Port_Moresby","NF":"Pacific/Norfolk","NC":"Pacific/Noumea","SB":"Pacific/Guadalcanal","VU":"Pacific/Efate","NZ":"Pacific/Auckland","KI":"Pacific/Tarawa","MH":"Pacific/Majuro","NR":"Pacific/Nauru","TV":"Pacific/Funafuti","WF":"Pacific/Wallis","FJ":"Pacific/Fiji","TK":"Pacific/Fakaofo","TO":"Pacific/Tongatapu","WS":"Pacific/Apia"};
+
+    Object.assign(countryTimeZones, {BV: "Europe/Oslo", HM: "Indian/Kerguelen"});
+
+    function populateCountries(language) {
+      const previous = countrySearch.value;
+      const locale = monthLocales[language] || "en-GB";
+      const names = new Intl.DisplayNames([locale], {type: "region"});
+      const englishNames = new Intl.DisplayNames(["en"], {type: "region"});
+      availableCountries = countryCodes.map(code => ({code, name: names.of(code) || code, englishName: englishNames.of(code) || code, zone: countryTimeZones[code] || "UTC"}))
+        .sort((a, b) => a.name.localeCompare(b.name, locale));
+      countrySearch.value = previous;
+      const countrySearchText = {
+        ar: ["اكتب اسم الدولة • مثال: ku", "ابدأ بكتابة اسم الدولة، ثم اخترها من القائمة."],
+        fil: ["I-type ang bansa • Halimbawa: ph", "Magsimulang mag-type, pagkatapos ay piliin ang bansa sa listahan."],
+        ko: ["국가 이름 입력 • 예: ko", "국가 이름을 입력한 후 목록에서 선택하세요."],
+        en: ["Type country name • Example: ku", "Start typing, then choose the country from the list."]
+      }[language] || ["Type country name • Example: ku", "Start typing, then choose the country from the list."];
+      countrySearch.placeholder = countrySearchText[0];
+      countrySearchNote.textContent = countrySearchText[1];
+      countrySuggestions.hidden = true;
     }
+
+    function countryLabel(country) {
+      return `${country.name} (${country.zone} • ${timeZoneOffset(country.zone)})`;
+    }
+
+    function renderCountrySuggestions(query = "") {
+      const search = query.trim().toLocaleLowerCase();
+      const matches = availableCountries
+        .filter(country => !search || country.name.toLocaleLowerCase().includes(search) || country.englishName.toLocaleLowerCase().includes(search) || country.code.toLocaleLowerCase().startsWith(search));
+
+      countrySuggestions.innerHTML = "";
+      matches.forEach(country => {
+        const button = document.createElement("button");
+        button.type = "button";
+        button.className = "country-suggestion";
+        button.setAttribute("role", "option");
+        button.textContent = countryLabel(country);
+        button.addEventListener("click", () => {
+          countrySearch.value = countryLabel(country);
+          countrySuggestions.hidden = true;
+          validateField(countrySearch);
+        });
+        countrySuggestions.appendChild(button);
+      });
+      countrySuggestions.hidden = matches.length === 0;
+    }
+
+    countrySearch.addEventListener("focus", () => renderCountrySuggestions(countrySearch.value));
+    countrySearch.addEventListener("input", () => renderCountrySuggestions(countrySearch.value));
+    document.addEventListener("click", event => {
+      if (!event.target.closest(".country-search-wrap")) countrySuggestions.hidden = true;
+    });
+
+    function timeZoneOffset(zone) {
+      try {
+        const value = new Intl.DateTimeFormat("en", {timeZone: zone, timeZoneName: "longOffset"})
+          .formatToParts(new Date()).find(part => part.type === "timeZoneName")?.value;
+        return value ? value.replace("GMT", "UTC") : "UTC";
+      } catch {
+        return "UTC";
+      }
+    }
+
+    function updateActivityOptions(language) {
+      const selected = activeTimeSelect.value;
+      const activityTranslations = {
+        ar: ["اختر فترة النشاط", "صباحًا • 05:00 إلى 11:00", "ظهرًا • 11:00 إلى 14:00", "عصرًا • 14:00 إلى 18:00", "مساءً • 18:00 إلى 22:00", "ليلًا • 22:00 إلى 05:00", "24 ساعة • نشيط طوال اليوم"],
+        fil: ["Pumili ng oras ng aktibidad", "Umaga • 05:00 hanggang 11:00", "Tanghali • 11:00 hanggang 14:00", "Hapon • 14:00 hanggang 18:00", "Gabi • 18:00 hanggang 22:00", "Hatinggabi • 22:00 hanggang 05:00", "24 oras • Aktibo buong araw"],
+        ko: ["활동 시간대 선택", "아침 • 05:00부터 11:00", "정오 • 11:00부터 14:00", "오후 • 14:00부터 18:00", "저녁 • 18:00부터 22:00", "밤 • 22:00부터 05:00", "24시간 • 하루 종일 활동"],
+        en: ["Select activity period", "Morning • 05:00 to 11:00", "Noon • 11:00 to 14:00", "Afternoon • 14:00 to 18:00", "Evening • 18:00 to 22:00", "Night • 22:00 to 05:00", "24 Hours • Active all day"]
+      };
+      const labels = activityTranslations[language] || activityTranslations.en;
+      [...activeTimeSelect.options].forEach((option, index) => option.textContent = labels[index]);
+      activeTimeSelect.value = selected;
+    }
+
+    function currentEnhancementText() {
+      return enhancementText[activeLanguage] || enhancementText.en;
+    }
+
+    function updateEnhancements(language) {
+      activeLanguage = language;
+      const text = currentEnhancementText();
+      populateCountries(language);
+      updateActivityOptions(language);
+      toggleCode.textContent = verificationInput.type === "password" ? text.show : text.hide;
+      document.getElementById("requiredNote").textContent = text.required;
+      const teamPowerWords = teamPowerTranslations[language] || teamPowerTranslations.en;
+      document.getElementById("teamPowerLabel").textContent = teamPowerWords[0];
+      document.getElementById("teamPower").placeholder = teamPowerWords[1];
+      document.getElementById("successTitle").textContent = text.success;
+      document.getElementById("successText").textContent = text.successText;
+      document.getElementById("sendAnother").textContent = text.another;
+      document.getElementById("errorTitle").textContent = text.error;
+      document.getElementById("errorText").textContent = text.errorText;
+      const locale = monthLocales[language] || "en-GB";
+      const monthYear = new Intl.DateTimeFormat(locale, {month:"long", year:"numeric"}).format(new Date());
+      const period = monthYear + " • " + text.update;
+      document.getElementById("updatePeriod").textContent = period;
+      document.getElementById("updatePeriodField").value = period;
+    }
+
+    toggleCode.addEventListener("click", () => {
+      verificationInput.type = verificationInput.type === "password" ? "text" : "password";
+      const text = currentEnhancementText();
+      toggleCode.textContent = verificationInput.type === "password" ? text.show : text.hide;
+      toggleCode.setAttribute("aria-label", toggleCode.textContent);
+    });
+
+    function validateField(field) {
+      const error = field.closest(".password-wrap, .country-search-wrap")?.nextElementSibling || field.nextElementSibling;
+      if (!error || !error.classList.contains("field-error")) return field.checkValidity();
+      const valid = field.checkValidity();
+      field.classList.toggle("invalid", !valid);
+      error.style.display = valid ? "none" : "block";
+      error.textContent = field.id === "activeTime" && field.value ? currentEnhancementText().time : currentEnhancementText().field;
+      return valid;
+    }
+
+    memberForm.querySelectorAll("[required]").forEach(field => {
+      field.addEventListener("input", () => validateField(field));
+      field.addEventListener("change", () => validateField(field));
+    });
+
+    memberForm.addEventListener("submit", async event => {
+      event.preventDefault();
+      errorPanel.hidden = true;
+      const requiredFields = [...memberForm.querySelectorAll("[required]")];
+      const isValid = requiredFields.map(validateField).every(Boolean);
+      if (!isValid) {
+        requiredFields.find(field => !field.checkValidity())?.focus();
+        return;
+      }
+
+      submitButton.disabled = true;
+      const originalText = submitButton.textContent;
+      submitButton.textContent = currentEnhancementText().sending;
+
+      try {
+        const response = await fetch(memberForm.action, {
+          method: "POST",
+          body: new FormData(memberForm),
+          headers: {Accept: "application/json"}
+        });
+        if (!response.ok) throw new Error("Submission failed");
+        memberForm.reset();
+        verificationInput.type = "password";
+        memberForm.hidden = true;
+        successPanel.hidden = false;
+        successPanel.scrollIntoView({behavior:"smooth", block:"center"});
+      } catch (error) {
+        errorPanel.hidden = false;
+        errorPanel.scrollIntoView({behavior:"smooth", block:"center"});
+      } finally {
+        submitButton.disabled = false;
+        submitButton.textContent = originalText;
+      }
+    });
+
+    document.getElementById("sendAnother").addEventListener("click", () => {
+      successPanel.hidden = true;
+      errorPanel.hidden = true;
+      memberForm.hidden = false;
+      updateEnhancements(activeLanguage);
+      memberForm.scrollIntoView({behavior:"smooth", block:"start"});
+    });
+
+    changeLanguage("en");
   </script>
+
+
 
 </body>
 </html>
